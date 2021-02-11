@@ -1,24 +1,118 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="XFBtgControls.MainPage">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:XFBtgControls.Controls" xmlns:pancakeview="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             x:Class="XFBtgControls.MainPage" x:Name="Page" BackgroundColor="LightGray">
 
-    <StackLayout>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="TitleTextStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Lato-SemiBold"/>
+                <Setter Property="TextColor" Value="#4a4a4a"/>
+                <Setter Property="LineHeight" Value="28"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+            
+            <Style x:Key="RingNumberStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Lato-Regular"/>
+                <Setter Property="TextColor" Value="#4a4a4a"/>
+                <Setter Property="LineHeight" Value="28"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+
+            <Style x:Key="RingTotalTextStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Lato-Regular"/>
+                <Setter Property="TextColor" Value="#4a4a4a"/>
+                <Setter Property="LineHeight" Value="28"/>
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+
+            <Style x:Key="LegendTextStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Lato-Regular"/>
+                <Setter Property="TextColor" Value="#4a4a4a"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Opacity" Value="0.7"/>
+            </Style>
+
+
+            <Style x:Key="ButtonTextStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Lato-Regular"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="LineHeight" Value="28"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout Spacing="0">
         <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
             <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
         </Frame>
-        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
+        
+        <FlexLayout>
+            <StackLayout FlexLayout.Grow="1">
+                <Slider x:Name="Slider1" Value="0.75" />
+                <Slider x:Name="Slider2" Value="0.6" />
+                <Slider x:Name="Slider3" Value="0.4" />
+                <Slider x:Name="WidthSlider" Value="80" Maximum="100" Minimum="0"/>
+                <Slider x:Name="SpacingSlider" Value="5" Maximum="50" Minimum="0"/>
+            </StackLayout>
+
+            <StackLayout FlexLayout.Basis="80">
+                <Label Text="{Binding Source={x:Reference Slider1}, Path=Value}"/>
+                <Label Text="{Binding Source={x:Reference Slider2}, Path=Value}"/>
+                <Label Text="{Binding Source={x:Reference Slider3}, Path=Value}"/>
+                <Label Text="{Binding Source={x:Reference WidthSlider}, Path=Value}"/>
+                <Label Text="{Binding Source={x:Reference SpacingSlider}, Path=Value}"/>
+            </StackLayout>
+        </FlexLayout>
+        <Frame Margin="16" WidthRequest="300" HorizontalOptions="Start" CornerRadius="8">
+            <StackLayout Spacing="16">
+                <Label Text="Open Issues" Style="{StaticResource TitleTextStyle}"/>
+                <FlexLayout Background="White" HorizontalOptions="StartAndExpand">
+                    <Grid BackgroundColor="White" WidthRequest="150" HeightRequest="150">
+
+                        <controls:MultiProgressRing RingSpacing="{Binding Source={x:Reference SpacingSlider}, Path=Value}" 
+                                        RingWidth="{Binding Source={x:Reference WidthSlider}, Path=Value}" 
+                                        Progress1="{Binding Source={x:Reference Slider1}, Path=Value}" 
+                                        Progress2="{Binding Source={x:Reference Slider2}, Path=Value}" 
+                                        Progress3="{Binding Source={x:Reference Slider3}, Path=Value}" 
+                                        ProgressColor1="#70D44B"
+                                        ProgressColor2="#FFBF3C"
+                                        ProgressColor3="#F18078"
+                                        RingOutlineColor="#F6F7F8"/>
+                        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                            <Label Text="30" Style="{StaticResource RingNumberStyle}"/>
+                            <Label Text="Total" Style="{StaticResource RingTotalTextStyle}"/>
+                        </StackLayout>
+                    </Grid>
+
+                    <StackLayout FlexLayout.AlignSelf="Center" Margin="16,0,0,0" Spacing="20">
+                        <BoxView HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" CornerRadius="5" Color="#F18078" />
+                        <BoxView HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" CornerRadius="5" Color="#FFBF3C"/>
+                        <BoxView HeightRequest="20" WidthRequest="20" HorizontalOptions="Start" CornerRadius="5"  Color="#70D44B"/>
+                    </StackLayout>
+                    <StackLayout FlexLayout.AlignSelf="Center" Margin="10" Spacing="20">
+                        <Label Text="OverDue" Style="{StaticResource LegendTextStyle}"/>
+                        <Label Text="Due Next Week" Style="{StaticResource LegendTextStyle}"/>
+                        <Label Text="Not Due" Style="{StaticResource LegendTextStyle}"/>
+                    </StackLayout>
+                </FlexLayout>
+
+                <FlexLayout JustifyContent="SpaceBetween">
+                    <pancakeview:PancakeView BackgroundColor="#4a4a4a" CornerRadius="4" FlexLayout.Grow="1" >
+                        <Label VerticalOptions="Center" HorizontalOptions="Center" Text="ADD ISSUE" Style="{StaticResource ButtonTextStyle}"/>
+                    </pancakeview:PancakeView>
+                    <pancakeview:PancakeView BackgroundColor="#4a4a4a" WidthRequest="48" HeightRequest="48" CornerRadius="4" Margin="8,0,0,0">
+                        <Path VerticalOptions="Center" HorizontalOptions="Center" Data="M21 2H18C18 0.89543 17.1046 0 16 0H8C6.89543 0 6 0.89543 6 2H3C1.34315 2 0 3.34315 0 5V15C0 16.6569 1.34315 18 3 18H21C22.6569 18 24 16.6569 24 15V5C24 3.34315 22.6569 2 21 2ZM8.60976 5.60976C9.5935 4.62602 10.9797 4 12.5 4C14.0203 4 15.4065 4.62602 16.3902 5.60976C17.374 6.5935 18 7.97967 18 9.5C18 11.0203 17.3963 12.3841 16.3902 13.3902C15.4065 14.374 14.0203 15 12.5 15C10.9797 15 9.61585 14.3963 8.60976 13.3902C7.62602 12.4065 7 11.0203 7 9.5C7 7.97967 7.60366 6.61585 8.60976 5.60976ZM12.4996 14C13.7417 14 14.8666 13.4844 15.6868 12.6875C16.5071 11.8672 17.0227 10.7422 16.9992 9.5C16.9992 8.25781 16.5071 7.13281 15.6868 6.3125C14.8666 5.51562 13.7417 5 12.4996 5C11.2575 5 10.1326 5.49219 9.31239 6.3125C8.51558 7.13281 8 8.25781 8 9.5C8 10.7422 8.49215 11.8672 9.31239 12.6875C10.1326 13.4844 11.2575 14 12.4996 14ZM20 7C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5C19.4477 5 19 5.44772 19 6C19 6.55228 19.4477 7 20 7Z" Fill="White"/>
+                    </pancakeview:PancakeView>
+                    <pancakeview:PancakeView BackgroundColor="#4a4a4a" WidthRequest="48" HeightRequest="48" CornerRadius="4" Margin="8,0,0,0">
+                        <Path VerticalOptions="Center" HorizontalOptions="Center" Data="M15.7349 11.7651L10.7554 16.7446L11.6505 17.6424L13.6464 15.6464C13.8417 15.4512 14.1583 15.4512 14.3536 15.6464C14.5488 15.8417 14.5488 16.1583 14.3536 16.3535L12.3566 18.3505L13.1484 19.1445L15.1464 17.1464C15.3417 16.9512 15.6583 16.9512 15.8536 17.1464C16.0488 17.3417 16.0488 17.6583 15.8536 17.8535L13.8545 19.8526L14.5 20.5C14.5 20.5 15 20.8668 15.5 20.5L19.5 16.5C20 16 19.5 15.5 19.5 15.5L15.7349 11.7651ZM9.51241 16.5062C8.9547 17.0696 8.05811 17.9731 7.5 18.5241V16.691L5.84408 15.863L7.84941 13.8577L7.13883 13.1541L5.27089 15.022L4.89039 13.5H2.46467L5 11.0361L4.982 11.018L10.0064 5.99358L10.0129 5.99999L12.1501 3.85722L14.2929 5.99999L12.1424 8.15047L12.8461 8.86104L15 6.7071L17.1464 8.85355L17.8536 8.14644L12.8563 3.1492L15 0.999993C15 0.999993 15.5 0.499993 16 0.999993L19.9999 4.99999C20.5 5.49999 20 5.99999 20 5.99999L15.5108 10.5216L15.5 10.5L9.5 16.5L9.51241 16.5062ZM0.5 6.49999L1.14386 7.14903L3.14645 5.14644C3.34171 4.95118 3.65829 4.95118 3.85355 5.14644C4.04882 5.3417 4.04882 5.65828 3.85355 5.85355L1.84814 7.85896L2.63786 8.65503L4.64645 6.64644C4.84171 6.45118 5.15829 6.45118 5.35355 6.64644C5.54882 6.8417 5.54882 7.15828 5.35355 7.35355L3.34214 9.36496L4.235 10.265L9.25535 5.24465L5.5 1.49999C5.32243 1.32242 5 0.999993 4.5 1.49999L0.454701 5.49999C0.277131 5.67756 0.0174461 5.99999 0.5 6.49999ZM1.78652 14.5C1.64409 14.96 1.42433 15.689 1.18755 16.4804L4.48404 19.7769L6.5 19.1544V17.309L4.5707 16.3444L4.10961 14.5H1.78652ZM0.0174461 20.4207C0.0174461 20.4207 0.422936 19.0466 0.862567 17.5697L3.40351 20.1106L0.57943 20.9827C0.538606 20.9942 0.496419 21 0.454701 21C0.335724 21 0.219859 20.9534 0.133312 20.8668C0.0165512 20.7501 -0.0278518 20.5792 0.0174461 20.4207Z" Fill="White"/>
+                    </pancakeview:PancakeView>
+                </FlexLayout>
+
+            </StackLayout>
+        </Frame>
     </StackLayout>
 
 </ContentPage>
